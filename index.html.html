@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Fiançailles Cynthia et Christophe</title>
+
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
+  
+  :root {
+    --color-text-primary: #333;
+    --color-text-secondary: #666;
+    --color-background-primary: #fff;
+    --color-background-secondary: #fafafa;
+    --color-border-secondary: #ddd;
+    --color-border-tertiary: #eee;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Jost', sans-serif; color: var(--color-text-primary); background: var(--color-background-primary); }
+  
+  .site-root { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #fff; box-shadow: 0 0 20px rgba(0,0,0,0.05); position: relative; }
+  
+  .page { display: none; }
+  .page.active { display: block; padding-bottom: 40px; }
+  .nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); position: sticky; top: 0; z-index: 10; }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; color: #8B6F5E; }
+  .nav-tabs { display: flex; gap: 4px; }
+  .nav-tab { font-size: 11px; font-weight: 500; padding: 6px 10px; border-radius: 20px; border: 0.5px solid var(--color-border-tertiary); background: transparent; color: var(--color-text-secondary); cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.2s; }
+  .nav-tab:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+  .nav-tab.active { background: #8B6F5E; color: #fff; border-color: #8B6F5E; }
+  
+  .hero { text-align: center; padding: 40px 20px 30px; background: var(--color-background-secondary); border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .hero-date { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #8B6F5E; margin-bottom: 12px; }
+  
+  /* Taille du titre ajustée pour s'adapter à l'écran */
+  .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 8.5vw, 42px); font-weight: 300; line-height: 1.2; color: var(--color-text-primary); margin-bottom: 6px; white-space: nowrap; }
+  .hero-title em { font-style: italic; color: #8B6F5E; }
+  .hero-subtitle { font-size: 13px; color: var(--color-text-secondary); letter-spacing: 0.08em; margin-bottom: 24px; }
+  
+  .countdown { display: flex; justify-content: center; gap: 15px; }
+  .countdown-unit { text-align: center; }
+  .countdown-num { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: #8B6F5E; display: block; line-height: 1; }
+  .countdown-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); margin-top: 4px; }
+  .countdown-sep { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--color-border-secondary); line-height: 1.15; }
+  
+  .section-header { padding: 24px 20px 12px; border-bottom: 0.5px solid var(--color-border-tertiary); text-align: center; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; font-style: italic; }
+  
+  .invite-content { padding: 20px; }
+  .invite-card { border: 0.5px solid #C9A99A; border-radius: var(--border-radius-lg); padding: 24px 16px; text-align: center; margin-bottom: 20px; background: var(--color-background-secondary); position: relative; overflow: hidden; }
+  .invite-card::before { content: '❧'; position: absolute; top: 10px; left: 16px; font-size: 16px; color: #C9A99A; opacity: 0.5; }
+  .invite-card::after { content: '❧'; position: absolute; bottom: 10px; right: 16px; font-size: 16px; color: #C9A99A; opacity: 0.5; transform: rotate(180deg); }
+  .invite-greeting { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; color: var(--color-text-secondary); margin-bottom: 12px; }
+  
+  /* Taille du nom ajustée pour s'adapter à l'écran */
+  .invite-names { font-family: 'Cormorant Garamond', serif; font-size: clamp(24px, 7.5vw, 32px); font-weight: 300; color: #8B6F5E; line-height: 1.2; margin-bottom: 4px; }
+  .invite-heart { color: #C9A99A; font-size: 18px; margin: 8px 0; }
+  .invite-text { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; max-width: 100%; margin: 16px auto; text-align: center; }
+  .invite-details { display: flex; justify-content: space-evenly; flex-wrap: wrap; gap: 15px; margin-top: 20px; padding-top: 16px; border-top: 0.5px solid var(--color-border-tertiary); }
+  .invite-detail { text-align: center; min-width: 70px; }
+  .invite-detail-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .invite-detail-value { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--color-text-primary); }
+  
+  .rsvp-form { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 20px; margin-bottom: 16px; }
+  .form-row { margin-bottom: 16px; }
+  .form-label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); margin-bottom: 8px; }
+  .form-row input, .form-row select, .form-row textarea { width: 100%; padding: 10px; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-family: 'Jost', sans-serif; font-size: 13px; }
+  .form-row textarea { height: 80px; resize: none; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  
+  .rsvp-options { display: flex; gap: 8px; margin-bottom: 16px; }
+  .rsvp-option { flex: 1; padding: 10px 4px; border: 1.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); text-align: center; cursor: pointer; transition: all 0.2s; font-size: 12px; color: var(--color-text-secondary); background: var(--color-background-secondary); }
+  .rsvp-option:hover { border-color: #C9A99A; }
+  .rsvp-option.selected { border-color: #8B6F5E; background: #FBF5F2; color: #8B6F5E; }
+  .rsvp-option .opt-icon { font-size: 18px; margin-bottom: 4px; }
+  .rsvp-option .opt-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+  
+  .btn-primary { width: 100%; padding: 14px; background: #8B6F5E; color: #fff; border: none; border-radius: var(--border-radius-md); font-family: 'Jost', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: #7A5E4D; }
+  
+  .notif-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 16px 20px 0; }
+  .stat-card { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 12px 8px; text-align: center; }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; color: #8B6F5E; line-height: 1; }
+  .stat-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); margin-top: 4px; }
+  
+  .notif-list { padding: 12px 20px; }
+  .notif-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .notif-item:last-child { border-bottom: none; }
+  .notif-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; flex-shrink: 0; }
+  .notif-avatar.yes { background: #EAF3DE; color: #3B6D11; }
+  .notif-avatar.no { background: #FCEBEB; color: #A32D2D; }
+  .notif-avatar.maybe { background: #FAEEDA; color: #854F0B; }
+  .notif-body { flex: 1; }
+  .notif-name { font-size: 13px; font-weight: 500; }
+  .notif-msg { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+  .notif-time { font-size: 10px; color: var(--color-text-secondary); white-space: nowrap; }
+  
+  .badge { display: inline-block; padding: 2px 6px; border-radius: 10px; font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+  .badge-yes { background: #EAF3DE; color: #3B6D11; }
+  .badge-no { background: #FCEBEB; color: #A32D2D; }
+  .badge-maybe { background: #FAEEDA; color: #854F0B; }
+  
+  .success-box { background: #EAF3DE; border: 0.5px solid #97C459; border-radius: var(--border-radius-lg); padding: 16px; text-align: center; display: none; margin-bottom: 16px;}
+  .success-box.show { display: block; }
+  .success-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #27500A; }
+  .success-sub { font-size: 12px; color: #3B6D11; margin-top: 4px; }
+  .empty-state { text-align: center; padding: 32px 20px; color: var(--color-text-secondary); font-size: 13px; }
+  </style>
+</head>
+<body>
+
+<div class="site-root">
+  <nav class="nav">
+    <span class="nav-logo"></span>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('invitation')">Invite</button>
+      <button class="nav-tab" onclick="showPage('rsvp')">RSVP</button>
+      <button class="nav-tab" onclick="showPage('notifications')">
+        Notifs
+        <span id="notif-badge" style="display:none;background:#E24B4A;color:#fff;border-radius:10px;font-size:10px;padding:1px 6px;margin-left:4px;">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-date" id="display-date-hero">25 juillet 2026 · Paris</div>
+    <!-- Noms avec espaces insécables et &amp; pour un affichage propre -->
+    <div class="hero-title"><span id="name1">Cynthia</span>&nbsp;<em>et</em>&nbsp;<span id="name2">Christophe</span></div>
+    <div class="hero-subtitle">Nous nous fiançons !</div>
+    <div class="countdown">
+      <div class="countdown-unit"><span class="countdown-num" id="cd-j">—</span><div class="countdown-label">Jours</div></div>
+      <span class="countdown-sep">·</span>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-h">—</span><div class="countdown-label">Heures</div></div>
+      <span class="countdown-sep">·</span>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-m">—</span><div class="countdown-label">Min</div></div>
+      <span class="countdown-sep">·</span>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-s">—</span><div class="countdown-label">Sec</div></div>
+    </div>
+  </div>
+
+  <div id="page-invitation" class="page active">
+    <div class="section-header">
+      <div class="section-title">Notre invitation</div>
+    </div>
+    <div class="invite-content">
+      <div class="invite-card">
+        <div class="invite-greeting">Vous êtes chaleureusement invité(e) à célébrer</div>
+        <!-- Même correction pour l'intérieur de la carte -->
+        <div class="invite-names">Cynthia et Christophe</div>
+        <div class="invite-heart">♡</div>
+        <div class="invite-text">Nous avons la joie de vous annoncer notre engagement et souhaitons partager ce moment précieux en votre compagnie, entourés de ceux que nous aimons.</div>
+        <div class="invite-details">
+          <div class="invite-detail">
+            <div class="invite-detail-label">Date</div>
+            <div class="invite-detail-value">25 juil. 2026</div>
+          </div>
+          <div class="invite-detail">
+            <div class="invite-detail-label">Heure</div>
+            <div class="invite-detail-value">19h30</div>
+          </div>
+          <div class="invite-detail">
+            <div class="invite-detail-label">Lieu</div>
+            <div class="invite-detail-value">Paris, FR</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-bottom:16px;">
+        <button class="btn-primary" onclick="showPage('rsvp')" style="max-width:300px;margin:0 auto;">Confirmer ma présence →</button>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="copyLink()" style="flex:1;padding:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);cursor:pointer;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;color:var(--color-text-secondary);">📋 Copier le lien</button>
+        <button onclick="shareInvite()" style="flex:1;padding:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);cursor:pointer;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;color:var(--color-text-secondary);">↗ Partager</button>
+      </div>
+      <div id="copy-confirm" style="display:none;text-align:center;font-size:12px;color:#3B6D11;margin-top:8px;">✓ Lien copié !</div>
+    </div>
+  </div>
+
+  <div id="page-rsvp" class="page">
+    <div class="section-header">
+      <div class="section-title">Confirmer présence</div>
+    </div>
+    <div class="invite-content">
+      <div id="rsvp-success" class="success-box">
+        <div class="success-title">✓ Merci !</div>
+        <div class="success-sub">Les fiancés ont été notifiés de votre réponse.</div>
+      </div>
+      <div id="rsvp-form-wrap" class="rsvp-form">
+        <div class="form-row">
+          <label class="form-label">Votre présence</label>
+          <div class="rsvp-options">
+            <div class="rsvp-option selected" id="opt-yes" onclick="selectRsvp('yes')">
+              <div class="opt-icon">🥂</div>
+              <div class="opt-label">Présent(e)</div>
+            </div>
+            <div class="rsvp-option" id="opt-maybe" onclick="selectRsvp('maybe')">
+              <div class="opt-icon">🤔</div>
+              <div class="opt-label">Peut-être</div>
+            </div>
+            <div class="rsvp-option" id="opt-no" onclick="selectRsvp('no')">
+              <div class="opt-icon">😢</div>
+              <div class="opt-label">Absent(e)</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-row">
+            <label class="form-label">Prénom</label>
+            <input type="text" id="rsvp-prenom" placeholder="Marie" />
+          </div>
+          <div class="form-row">
+            <label class="form-label">Nom</label>
+            <input type="text" id="rsvp-nom" placeholder="Dupont" />
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Email</label>
+          <input type="email" id="rsvp-email" placeholder="marie@exemple.fr" />
+        </div>
+        <div class="form-row">
+          <label class="form-label">Nombre d'adultes</label>
+          <select id="rsvp-adultes">
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Message (optionnel)</label>
+          <textarea id="rsvp-msg" placeholder="Un mot pour les fiancés..."></textarea>
+        </div>
+        <button class="btn-primary" onclick="submitRsvp()">Envoyer ma réponse ♡</button><p style="margin-top:10px;font-size:12px;color:#666">Remplacez FORMSPREE_ID dans le script par votre identifiant Formspree.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-notifications" class="page">
+    <div class="section-header">
+      <div class="section-title">Réponses reçues</div>
+    </div>
+    <div class="notif-stats">
+      <div class="stat-card"><div class="stat-num" id="stat-yes">0</div><div class="stat-label">Présents</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-maybe">0</div><div class="stat-label">Peut-être</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-no">0</div><div class="stat-label">Absents</div></div>
+    </div>
+    <div class="notif-list" id="notif-list">
+      <div class="empty-state" id="empty-notif">🔔<br><br>Aucune réponse pour l'instant.<br>Partagez l'invitation !</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const rsvps = [];
+let selectedRsvp = 'yes';
+
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-' + p).classList.add('active');
+  const tabs = { invitation: 0, rsvp: 1, notifications: 2 };
+  document.querySelectorAll('.nav-tab')[tabs[p]].classList.add('active');
+  window.scrollTo(0, 0); 
+}
+
+function selectRsvp(v) {
+  selectedRsvp = v;
+  ['yes','maybe','no'].forEach(x => document.getElementById('opt-'+x).classList.remove('selected'));
+  document.getElementById('opt-'+v).classList.add('selected');
+}
+
+
+async function submitRsvp() {
+  const prenom = document.getElementById('rsvp-prenom').value.trim();
+  const nom = document.getElementById('rsvp-nom').value.trim();
+  if (!prenom || !nom) { alert('Veuillez renseigner votre prénom et nom.'); return; }
+
+  const payload = {
+    prenom,
+    nom,
+    email: document.getElementById('rsvp-email').value.trim(),
+    adultes: document.getElementById('rsvp-adultes').value,
+    message: document.getElementById('rsvp-msg').value.trim(),
+    presence: selectedRsvp
+  };
+
+  try {
+    const response = await fetch('https://formspree.io/f/FORMSPREE_ID', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) throw new Error('Erreur envoi');
+
+    document.getElementById('rsvp-form-wrap').style.display = 'none';
+    document.getElementById('rsvp-success').classList.add('show');
+  } catch (e) {
+    alert("Impossible d'envoyer la réponse. Vérifiez votre identifiant Formspree.");
+  }
+}
+
+
+function updateNotifications() {
+  const list = document.getElementById('notif-list');
+  document.getElementById('empty-notif').style.display = rsvps.length ? 'none' : '';
+  document.getElementById('stat-yes').textContent = rsvps.filter(r=>r.status==='yes').length;
+  document.getElementById('stat-maybe').textContent = rsvps.filter(r=>r.status==='maybe').length;
+  document.getElementById('stat-no').textContent = rsvps.filter(r=>r.status==='no').length;
+  const msgs = {
+    yes: r => `Sera présent(e) avec ${r.adultes} adulte(s)${r.msg ? ' · "'+r.msg+'"' : ''}`,
+    maybe: r => `Incertain(e)${r.msg ? ' · "'+r.msg+'"' : ''}`,
+    no: r => `Ne pourra pas venir${r.msg ? ' · "'+r.msg+'"' : ''}`
+  };
+  const labels = { yes: '✓ Présent', maybe: '? Peut-être', no: '✗ Absent' };
+  list.innerHTML = rsvps.map(r => `
+    <div class="notif-item">
+      <div class="notif-avatar ${r.status}">${r.initials}</div>
+      <div class="notif-body">
+        <div class="notif-name">${r.prenom} ${r.nom} <span class="badge badge-${r.status}">${labels[r.status]}</span></div>
+        <div class="notif-msg">${msgs[r.status](r)}</div>
+      </div>
+      <div class="notif-time">${r.timeStr}</div>
+    </div>`).join('');
+}
+
+function updateBadge() {
+  const b = document.getElementById('notif-badge');
+  b.textContent = rsvps.length;
+  b.style.display = rsvps.length > 0 ? 'inline-block' : 'none';
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).catch(()=>{});
+  const c = document.getElementById('copy-confirm');
+  c.style.display = 'block';
+  setTimeout(() => c.style.display = 'none', 2500);
+}
+
+function shareInvite() {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Fiançailles Cynthia et Christophe',
+        text: 'Nous vous invitons à célébrer nos fiançailles le 25 juillet 2026 ! Cliquez ici pour confirmer votre présence :',
+        url: window.location.href
+      }).catch(console.error);
+    } else {
+      alert("Votre navigateur ne supporte pas le partage direct. Utilisez le bouton 'Copier le lien'.");
+    }
+}
+
+(function countdown() {
+  const target = new Date('2026-07-25T19:30:00');
+  function tick() {
+    const diff = target - new Date();
+    if (diff <= 0) {
+      ['j','h','m','s'].forEach(u => document.getElementById('cd-'+u).textContent = '0');
+      return;
+    }
+    document.getElementById('cd-j').textContent = Math.floor(diff / 86400000);
+    document.getElementById('cd-h').textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
+    setTimeout(tick, 1000);
+  }
+  tick();
+})();
+</script>
+
+<section style="padding:20px;text-align:center;border-top:1px solid #eee;">
+  <h2 style="font-family:'Cormorant Garamond',serif;">Nos souvenirs</h2>
+  <p>Ajoutez vos photos préférées ici.</p>
+  <img src="photo-couple.jpg" alt="Photo du couple" style="max-width:100%;border-radius:12px;">
+</section>
+
+<section style="padding:20px;text-align:center;border-top:1px solid #eee;">
+  <h2 style="font-family:'Cormorant Garamond',serif;">Lieu de réception</h2>
+  <p>Remplacez ce texte par votre adresse complète.</p>
+  <iframe
+    src="https://www.google.com/maps?q=Paris&output=embed"
+    width="100%"
+    height="250"
+    style="border:0;border-radius:12px;"
+    loading="lazy">
+  </iframe>
+</section>
+
+</body>
+</html>
